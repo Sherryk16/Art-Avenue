@@ -154,7 +154,7 @@ export default function ContactPage() {
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#d4af37] to-[#f4e4bc] flex items-center justify-center text-2xl">
-                      <SocialIcon network="gmail" bgColor="transparent" fgColor="#000" style={{ width: 40, height: 40 }} />
+                      <SocialIcon network="gmail" color="transparent" fgColor="#000" style={{ width: 40, height: 40 }} />
                     </div>
                     <div>
                       <h3 className="font-bold text-gold mb-1">Email</h3>
@@ -187,7 +187,7 @@ export default function ContactPage() {
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                     >
-                      <SocialIcon network="gmail" bgColor="transparent" fgColor="#d4af37" style={{ width: 40, height: 40 }} />
+                      <SocialIcon network="gmail" color="transparent" fgColor="#d4af37" style={{ width: 40, height: 40 }} />
                     </motion.a>
                   </div>
                 </div>
