@@ -35,7 +35,7 @@ export default function Footer() {
               whileHover={{ scale: 1.05, color: '#d4af37' }}
               whileTap={{ scale: 0.95 }}
             >
-              <SocialIcon network="email" url="mailto:support@artavenueproductions.com" bgColor="transparent" fgColor="#d4af37" style={{ width: 24, height: 24, marginRight: 8 }} />
+              <SocialIcon network="gmail" url="mailto:support@artavenueproductions.com" bgColor="transparent" fgColor="#d4af37" style={{ width: 24, height: 24, marginRight: 8 }} />
               support@artavenueproductions.com
             </motion.a>
 
