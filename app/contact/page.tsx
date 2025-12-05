@@ -31,7 +31,7 @@ export default function ContactPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-32 pb-20 px-6 bg-gradient-to-b from-black to-[#0a0a0a]">
+      <main className="pt-32 pb-20 px-6 bg-linear-to-b from-black to-[#0a0a0a]">
         <div className="max-w-7xl mx-auto">
           {/* Hero Section */}
           <motion.div
@@ -124,9 +124,9 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-700 bg-black/50 text-white focus:border-[var(--gold)] focus:outline-none focus:ring-2 focus:ring-[var(--gold-glow)] transition-all resize-none"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-700 bg-black/50 text-white focus:border-[#d4af37] focus:outline-none focus:ring-2 focus:ring-[#d4af37]/20 transition-all resize-none"
                     placeholder="Tell us about your project..."
-                  />
+                  ></textarea>
                 </div>
 
                 <motion.button
@@ -153,8 +153,8 @@ export default function ContactPage() {
                 </h2>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#d4af37] to-[#f4e4bc] flex items-center justify-center text-2xl">
-                      <SocialIcon network="gmail" color="transparent" fgColor="#000" style={{ width: 40, height: 40 }} />
+                    <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#d4af37] to-[#f4e4bc] flex items-center justify-center text-2xl">
+                      <SocialIcon network="gmail" color="#000" styles={{ width: 40, height: 40 }} />
                     </div>
                     <div>
                       <h3 className="font-bold text-gold mb-1">Email</h3>
@@ -171,7 +171,7 @@ export default function ContactPage() {
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                     >
-                      <SocialIcon network="discord" url="https://discord.com/invite/artavenue" bgColor="transparent" fgColor="#d4af37" style={{ width: 40, height: 40 }} />
+                      <SocialIcon network="discord" color="#d4af37" styles={{ width: 40, height: 40 }} />
                     </motion.a>
                     <motion.a
                       href="https://instagram.com/artavenue_official_" // Updated Instagram link
@@ -180,14 +180,14 @@ export default function ContactPage() {
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                     >
-                      <SocialIcon network="instagram" url="https://instagram.com/artavenue_official_" bgColor="transparent" fgColor="#d4af37" style={{ width: 40, height: 40 }} />
+                      <SocialIcon network="instagram" color="#d4af37" styles={{ width: 40, height: 40 }} />
                     </motion.a>
                     <motion.a
                       href="mailto:support@artavenueproductions.com" // Updated Email link
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                     >
-                      <SocialIcon network="gmail" color="transparent" fgColor="#d4af37" style={{ width: 40, height: 40 }} />
+                      <SocialIcon network="gmail" color="#d4af37" styles={{ width: 40, height: 40 }} />
                     </motion.a>
                   </div>
                 </div>
