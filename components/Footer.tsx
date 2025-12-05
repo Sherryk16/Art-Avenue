@@ -35,7 +35,7 @@ export default function Footer() {
               whileHover={{ scale: 1.05, color: '#d4af37' }}
               whileTap={{ scale: 0.95 }}
             >
-              <SocialIcon network="gmail" color="transparent" style={{ width: 24, height: 24, marginRight: 8 }} />
+              <SocialIcon network="gmail" color="#d4af37" styles={{ width: 24, height: 24, marginRight: 8 }} />
               support@artavenueproductions.com
             </motion.a>
 
@@ -47,7 +47,7 @@ export default function Footer() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <SocialIcon network="discord" color="transparent" fgColor="#d4af37" style={{ width: 40, height: 40 }} />
+                <SocialIcon network="discord" color="#d4af37" styles={{ width: 40, height: 40 }} />
               </motion.a>
               <motion.a
                 href="https://instagram.com/artavenue_official_" // Updated Instagram link
@@ -56,7 +56,7 @@ export default function Footer() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <SocialIcon network="instagram" color="transparent" fgColor="#d4af37" style={{ width: 40, height: 40 }} />
+                <SocialIcon network="instagram" color="#d4af37" styles={{ width: 40, height: 40 }} />
               </motion.a>
             </div>
           </div>
