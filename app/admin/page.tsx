@@ -47,9 +47,11 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    fetchPortfolioItems();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only run on mount
+    const loadItems = async () => {
+      await fetchPortfolioItems();
+    };
+    loadItems();
+  }, [fetchPortfolioItems]);
 
   const fixedCategories = [
     'Logo',
@@ -264,7 +266,7 @@ export default function AdminPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-32 pb-20 px-6 bg-gradient-to-b from-black to-[#0a0a0a] min-h-screen">
+      <main className="pt-32 pb-20 px-6 bg-linear-to-b from-black to-[#0a0a0a] min-h-screen">
         <div className="max-w-7xl mx-auto">
           <motion.h1
             className="text-5xl md:text-6xl font-bold mb-12 text-center text-gold"

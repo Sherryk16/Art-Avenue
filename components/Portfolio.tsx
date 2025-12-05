@@ -23,7 +23,7 @@ export default function Portfolio() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const ref = useRef(null);
-  const _isInView = useInView(ref, { once: true, margin: '-100px' });
+  // const _isInView = useInView(ref, { once: true, margin: '-100px' }); // Removed unused variable
 
   useEffect(() => {
     async function getFeaturedPortfolioItems() {
