@@ -34,6 +34,11 @@ const cormorant = Cormorant({
 export const metadata: Metadata = {
   title: "Art Avenue | Discover, Collect, and Experience Art",
   description: "Explore a curated collection of fine art, contemporary pieces, and emerging artists at Art Avenue. Your destination for unique artworks and artistic inspiration.",
+  icons: {
+    icon: '/herologo.png',
+    apple: '/herologo.png',
+  }
+
 };
 
 export default function RootLayout({
