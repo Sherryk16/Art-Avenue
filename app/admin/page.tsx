@@ -29,7 +29,7 @@ export default function AdminPage() {
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
 
-  const fetchPortfolioItems = async () => {
+  const fetchPortfolioItems = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('portfolio_items')
@@ -44,7 +44,7 @@ export default function AdminPage() {
     }
     setPortfolioItems(data || []);
     setLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
     const loadItems = async () => {
@@ -56,6 +56,7 @@ export default function AdminPage() {
   const fixedCategories = [
     'Logo',
     'Emotes',
+    'Animated Emotes',
     'Banner',
     'Overlays',
     'Hand-drawns',

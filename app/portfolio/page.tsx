@@ -59,13 +59,37 @@ export default function PortfolioPage() {
     return acc;
   }, {} as { [key: string]: PortfolioItem[] });
 
+  const customCategoryOrder = [
+    'Logo',
+    'Banner',
+    'Overlays',
+    'Hand Drawn',
+    'Emotes',
+    'Animated Emotes',
+  ];
+
   const uniqueCategories = ['All', ...Array.from(new Set(portfolioItems.map(item => item.category)))].sort((a, b) => {
-      if (a === 'All') return -1; // 'All' comes first
-      if (b === 'All') return 1;
-      return a.localeCompare(b);
+    if (a === 'All') return -1;
+    if (b === 'All') return 1;
+
+    const indexA = customCategoryOrder.indexOf(a);
+    const indexB = customCategoryOrder.indexOf(b);
+
+    if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
   });
 
-  const sortedCategories = Object.keys(groupedItems).sort();
+  const sortedCategories = Object.keys(groupedItems).sort((a, b) => {
+    const indexA = customCategoryOrder.indexOf(a);
+    const indexB = customCategoryOrder.indexOf(b);
+
+    if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
+  });
 
   if (loading) {
     return (
@@ -220,4 +244,3 @@ export default function PortfolioPage() {
     </>
   );
 }
-

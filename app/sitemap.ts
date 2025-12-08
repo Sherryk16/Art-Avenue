@@ -35,3 +35,4 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Add more pages here as needed
   ];
 }
+
