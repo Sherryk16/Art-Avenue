@@ -16,7 +16,7 @@ const services = [
   },
   {
     title: 'Stream Banners',
-    description: 'Eye-catching banners for your channel and social media.',
+    description: 'Eye catching banners for your channel and social media.',
   },
   {
     title: 'Animated Alerts',
@@ -28,7 +28,7 @@ const services = [
   },
   {
     title: '3D VTuber Models',
-    description: 'High-quality 3D models that bring your avatar to life.',
+    description: 'High quality 3D models that bring your avatar to life.',
   },
   {
     title: 'Full Branding Packages',

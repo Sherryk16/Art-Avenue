@@ -75,9 +75,7 @@ export default function Hero() {
                 color: 'var(--gold)',
                 textShadow: '0 0 10px var(--gold)',
               }}>
-              Art Avenue is a bespoke design studio specializing in timeless visual branding and exquisite digital art.
-              <br /><br />
-              We create high-end, signature designs—from distinctive logos to refined digital assets—for discerning entrepreneurs and luxury brands. We are where creativity meets luxury, ensuring your digital presence is both impactful and enduring.
+              Welcome to our gaming art studio your one stop destination for high quality custom logos, banners, emotes, overlays, and hand-drawn illustrations. We specialize in creating unique and eye catching artwork for gamers, streamers, YouTubers, and content creators who want to build a strong, memorable online identity.
             </motion.p>
           </motion.div>
 

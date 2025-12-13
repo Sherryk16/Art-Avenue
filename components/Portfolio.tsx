@@ -48,10 +48,56 @@ export default function Portfolio() {
     getFeaturedPortfolioItems();
   }, []);
 
+  const groupedItems: { [key: string]: PortfolioItem[] } = portfolioItems.reduce((acc, item) => {
+    if (!acc[item.category]) {
+      acc[item.category] = [];
+    }
+    acc[item.category].push(item);
+    return acc;
+  }, {} as { [key: string]: PortfolioItem[] });
+
+  const customCategoryOrder = [
+    'Logo',
+    'Banner',
+    'Overlays',
+    'Emotes',
+    'Hand Drawn',
+    'Animated Emotes',
+  ];
+
+  const sortedCategories = Object.keys(groupedItems).sort((a, b) => {
+    const indexA = customCategoryOrder.indexOf(a);
+    const indexB = customCategoryOrder.indexOf(b);
+
+    if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
+  });
+
+  const getCategoryDescription = (category: string) => {
+    switch (category.toLowerCase()) {
+      case 'logo':
+        return 'Custom Gaming Logos Designed to Define Your Identity.<br />Strong, unique, and perfectly crafted to represent your brand.';
+      case 'banner':
+        return 'Eye-Catching Banners That Make Your Profile Stand Out.<br />Designed for YouTube, Twitch, Discord, and all gaming platforms.';
+      case 'overlays':
+        return 'Stream-Ready Overlays for a Professional, Clean Look.<br />Enhance your stream with premium, well-designed graphics.';
+      case 'emotes':
+        return 'Custom Emotes That Express Your Personality.<br />Cute, fun, expressive emotes made for Twitch & Discord.';
+      case 'hand drawn': // Note: Changed to 'hand drawn' to match the customCategoryOrder
+        return 'Hand-Drawn Illustrations Crafted With Detail & Creativity.<br />Original artwork made with passion, style, and artistic depth.';
+      case 'animated emotes':
+        return 'Dynamic Emotes That Bring Your Personality to Life.<br />Engage your audience with vibrant animated expressions.';
+      default:
+        return 'Explore our collection of premium designs crafted for streamers worldwide';
+    }
+  };
+
   if (loading) {
     return (
       <section id="portfolio" className="py-20 px-6 bg-gradient-to-b from-[#0a0a0a] to-black text-center text-gold">
-        Loading featured work...
+        Loading categories...
       </section>
     );
   }
@@ -67,7 +113,7 @@ export default function Portfolio() {
   if (portfolioItems.length === 0) {
     return (
       <section id="portfolio" className="py-20 px-6 bg-gradient-to-b from-[#0a0a0a] to-black text-center text-gray-400">
-        No featured work available yet!
+        No categories available yet!
       </section>
     );
   }
@@ -82,55 +128,67 @@ export default function Portfolio() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ fontFamily: 'var(--font-playfair)' }}>
-            <span className="text-gold">Feature Work</span>
+            <span className="text-gold">Our Creative Categories</span>
           </h2>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Showcasing premium designs crafted for streamers worldwide
+            Explore a diverse range of high-quality custom art services.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {portfolioItems.map((item, index) => (
+        {sortedCategories.map((category) => {
+          const itemsInCategory = groupedItems[category];
+          if (itemsInCategory.length === 0) return null;
+
+          return (
             <motion.div
-              key={item.id}
-              className="premium-card overflow-hidden group cursor-pointer"
+              key={category}
+              className="mb-16"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
+              transition={{ duration: 0.6 }}
             >
-              <div className="relative h-64 overflow-hidden">
-                {item.video_url ? (
-                  <video
-                    src={item.video_url}
-                    controls
-                    className="w-full h-full object-contain"
+              <h3 className="text-3xl md:text-4xl font-bold mb-2 text-center" style={{ fontFamily: 'var(--font-playfair)' }}>
+                <span className="text-gold">{category}</span>
+              </h3>
+              <p className="text-lg text-gray-300 max-w-xl mx-auto mb-8 text-center" dangerouslySetInnerHTML={{ __html: getCategoryDescription(category) }} />
+              <div className="grid grid-cols-3 gap-2 max-w-lg mx-auto">
+                {itemsInCategory.slice(0, 9).map((item, index) => (
+                  <motion.div
+                    key={item.id}
+                    className="premium-card overflow-hidden group cursor-pointer rounded-lg"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.4, delay: index * 0.05 }}
+                    whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(212,175,55,0.4)' }}
                   >
-                    Your browser does not support the video tag.
-                  </video>
-                ) : (
-                  <Image
-                    src={item.image_url}
-                    alt={item.title}
-                    fill
-                    style={{ objectFit: 'contain' }}
-                    quality={100}
-                  />
-                )}
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <span className="inline-block px-3 py-1 bg-black/90 backdrop-blur-sm rounded-full text-sm font-medium text-[#d4af37]">
-                    {item.category}
-                  </span>
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gold mb-2">{item.title}</h3>
-                <p className="text-gray-300 text-sm">{item.description || 'Premium design crafted for streamers'}</p>
+                    <div className="relative w-full h-24 sm:h-28 overflow-hidden">
+                      {item.video_url ? (
+                        <video
+                          src={item.video_url}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="w-full h-full object-contain"
+                        >
+                          Your browser does not support the video tag.
+                        </video>
+                      ) : (
+                        <Image
+                          src={item.image_url}
+                          alt={item.title}
+                          fill
+                          style={{ objectFit: 'contain' }}
+                          quality={75}
+                        />
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
-          ))}
-        </div>
+          );
+        })}
 
         <motion.div
           className="text-center mt-12"

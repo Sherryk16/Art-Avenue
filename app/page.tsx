@@ -10,7 +10,7 @@ import Footer from '../components/Footer';
 
 export const metadata: Metadata = {
   title: "Art Avenue | Your Gateway to Exquisite Art",
-  description: "Discover and collect unique artworks from emerging and established artists. Art Avenue offers a curated selection of paintings, sculptures, and digital art to enhance your space and inspire your life.",
+  description: "Welcome to our gaming art studio your one stop destination for high quality custom logos, banners, emotes, overlays, and hand-drawn illustrations. We specialize in creating unique and eye catching artwork for gamers, streamers, YouTubers, and content creators who want to build a strong, memorable online identity.",
 };
 
 export default function Home() {
@@ -20,9 +20,9 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <WhyChooseUs />
-        <Services />
         <Portfolio />
+        <Services />
+        <WhyChooseUs />
         <Testimonials />
       </main>
       <Footer />

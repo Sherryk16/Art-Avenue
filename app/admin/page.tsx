@@ -441,7 +441,7 @@ export default function AdminPage() {
                       <tr key={item.id} className="border-b border-gray-700 hover:bg-gray-800">
                         <td className="py-3 px-6 text-left">
                           {item.video_url ? (
-                            <video src={item.video_url} controls width={60} height={60} className="rounded-md object-cover"></video>
+                            <video src={item.video_url} controls width={150} height={100} className="rounded-md object-cover"></video>
                           ) : (
                             <Image src={item.image_url} alt={item.title} width={60} height={60} className="rounded-md object-cover" />
                           )}
