@@ -54,10 +54,7 @@ body {
 
 /* Text Gold Gradient */
 .text-gold {
-  background: linear-gradient(135deg, #d4af37 0%, #f4e4bc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--gold);
 }
 
 /* Smooth Scroll */

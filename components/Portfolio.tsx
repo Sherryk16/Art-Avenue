@@ -23,7 +23,6 @@ export default function Portfolio() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const ref = useRef(null);
-  // const _isInView = useInView(ref, { once: true, margin: '-100px' }); // Removed unused variable
 
   useEffect(() => {
     async function getFeaturedPortfolioItems() {
@@ -85,7 +84,7 @@ export default function Portfolio() {
         return 'Stream-Ready Overlays for a Professional, Clean Look.<br />Enhance your stream with premium, well-designed graphics.';
       case 'emotes':
         return 'Custom Emotes That Express Your Personality.<br />Cute, fun, expressive emotes made for Twitch & Discord.';
-      case 'hand drawn': // Note: Changed to 'hand drawn' to match the customCategoryOrder
+      case 'hand drawn':
         return 'Hand-Drawn Illustrations Crafted With Detail & Creativity.<br />Original artwork made with passion, style, and artistic depth.';
       case 'animated emotes':
         return 'Dynamic Emotes That Bring Your Personality to Life.<br />Engage your audience with vibrant animated expressions.';
@@ -139,6 +138,11 @@ export default function Portfolio() {
           const itemsInCategory = groupedItems[category];
           if (itemsInCategory.length === 0) return null;
 
+          const isLogoCategory = category.toLowerCase() === 'logo';
+          const maxItems = 16;
+          const gridCols = 'grid-cols-4';
+          const maxWidth = 'max-w-md';
+
           return (
             <motion.div
               key={category}
@@ -151,17 +155,18 @@ export default function Portfolio() {
                 <span className="text-gold">{category}</span>
               </h3>
               <p className="text-lg text-gray-300 max-w-xl mx-auto mb-8 text-center" dangerouslySetInnerHTML={{ __html: getCategoryDescription(category) }} />
-              <div className="grid grid-cols-3 gap-2 max-w-lg mx-auto">
-                {itemsInCategory.slice(0, 9).map((item, index) => (
+              
+              <div className={`grid ${gridCols} gap-1.5 ${maxWidth} mx-auto`}>
+                {itemsInCategory.slice(0, maxItems).map((item, index) => (
                   <motion.div
                     key={item.id}
-                    className="premium-card overflow-hidden group cursor-pointer rounded-lg"
+                    className="premium-card overflow-hidden group cursor-pointer rounded-md aspect-square"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4, delay: index * 0.05 }}
-                    whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(212,175,55,0.4)' }}
+                    transition={{ duration: 0.4, delay: index * 0.03 }}
+                    whileHover={{ scale: 1.08, boxShadow: '0 0 15px rgba(212,175,55,0.4)' }}
                   >
-                    <div className="relative w-full h-24 sm:h-28 overflow-hidden">
+                    <div className="relative w-full h-full overflow-hidden p-1">
                       {item.video_url ? (
                         <video
                           src={item.video_url}
@@ -210,4 +215,3 @@ export default function Portfolio() {
     </section>
   );
 }
-

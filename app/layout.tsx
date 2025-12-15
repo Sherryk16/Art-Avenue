@@ -38,7 +38,6 @@ export const metadata: Metadata = {
     icon: '/herologo.png',
     apple: '/herologo.png',
   }
-
 };
 
 export default function RootLayout({
