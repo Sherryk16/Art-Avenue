@@ -48,7 +48,7 @@ export default function Hero() {
                 ART
               </span>
               <Image
-                src="/herologo1.png"
+                src="/herologo1.png?v=1.1"
                 alt=""
                 width={150}
                 height={150}

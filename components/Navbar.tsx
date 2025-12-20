@@ -63,11 +63,17 @@ export default function Navbar() {
             {/* Logo */}
             <Link href="/" className="flex items-center">
               <Image
-                src="/logo.png"
+                src="/logo.png?v=1.1"
                 alt="Art Avenue"
                 width={200}
                 height={80}
                 priority
+                unoptimized={false}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.onerror = null; // Prevent infinite loop
+                  target.src = "/herologo.png?v=1.1"; // Fallback to alternative logo
+                }}
               />
             </Link>
 
