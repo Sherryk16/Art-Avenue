@@ -87,10 +87,19 @@ export default function ServicesPage() {
                   ))}
                 </ul>
 
-                <div className="pt-6 border-t border-gray-700">
-                  <Link href="/contact">
+                <div className="pt-6 border-t border-gray-700 flex flex-col sm:flex-row gap-3">
+                  <Link href={`/services/${service.title.toLowerCase().replace(/\//g, '-').replace(/\s+/g, '-')}`}>
                     <motion.button
                       className="w-full premium-btn-outline"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Learn More
+                    </motion.button>
+                  </Link>
+                  <Link href="/contact">
+                    <motion.button
+                      className="w-full premium-btn"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >

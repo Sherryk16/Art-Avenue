@@ -27,18 +27,22 @@ export default function PortfolioPage() {
   useEffect(() => {
     async function getAllPortfolioItems() {
       setLoading(true);
-      const { data, error } = await supabase
+      const { data, error, count } = await supabase
         .from('portfolio_items')
-        .select('id, category, title, description, image_url, video_url, order')
+        .select('id, category, title, description, image_url, video_url, order', { count: 'exact' })
         .order('category', { ascending: true })
         .order('order', { ascending: true });
 
       if (error) {
         console.error('Error fetching all portfolio items:', error);
+        console.error('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
         setError(error.message);
         setLoading(false);
         return;
       }
+
+      console.log('Fetched all portfolio items:', data);
+      console.log('Total portfolio items:', count);
 
       setPortfolioItems(data || []);
       setLoading(false);
@@ -216,6 +220,10 @@ export default function PortfolioPage() {
                               fill
                               style={{ objectFit: 'contain' }}
                               quality={100}
+                              onError={(e) => {
+                                console.error('Portfolio image failed to load:', item.image_url);
+                                console.log('Item details:', item);
+                              }}
                             />
                           )}
                           <motion.div

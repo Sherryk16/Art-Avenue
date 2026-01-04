@@ -27,18 +27,33 @@ export default function Portfolio() {
   useEffect(() => {
     async function getFeaturedPortfolioItems() {
       setLoading(true);
-      const { data, error } = await supabase
+      const { data, error, count } = await supabase
         .from('portfolio_items')
-        .select('id, category, title, description, image_url, video_url, is_featured')
+        .select('id, category, title, description, image_url, video_url, is_featured', { count: 'exact' })
         .eq('is_featured', true)
         .order('created_at', { ascending: false });
 
       if (error) {
         console.error('Error fetching featured portfolio items:', error);
+        console.error('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
         setError(error.message);
         setLoading(false);
         return;
       }
+
+      console.log('Fetched portfolio items:', data);
+      console.log('Total featured items:', count);
+
+      // Group items by category to check what's available
+      const grouped = data?.reduce((acc, item) => {
+        if (!acc[item.category]) {
+          acc[item.category] = [];
+        }
+        acc[item.category].push(item);
+        return acc;
+      }, {} as { [key: string]: PortfolioItem[] });
+
+      console.log('Grouped items by category:', grouped);
 
       setPortfolioItems(data || []);
       setLoading(false);
@@ -185,6 +200,10 @@ export default function Portfolio() {
                           fill
                           style={{ objectFit: 'contain' }}
                           quality={75}
+                          onError={(e) => {
+                            console.error('Image failed to load:', item.image_url);
+                            console.log('Item details:', item);
+                          }}
                         />
                       )}
                     </div>

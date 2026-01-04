@@ -31,7 +31,7 @@ export default function ContactPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-32 pb-20 px-6 bg-linear-to-b from-black to-[#0a0a0a]">
+      <main className="pt-32 pb-20 px-6 bg-gradient-to-b from-black to-[#0a0a0a]">
         <div className="max-w-7xl mx-auto">
           {/* Hero Section */}
           <motion.div
@@ -147,48 +147,46 @@ export default function ContactPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <div className="premium-card p-8 bg-white">
+              <div className="premium-card p-8">
                 <h2 className="text-3xl font-bold mb-6 text-gold" style={{ fontFamily: 'var(--font-playfair)' }}>
                   Contact Information
                 </h2>
                 <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#d4af37] to-[#f4e4bc] flex items-center justify-center text-2xl">
-                      <SocialIcon network="gmail" color="#000" styles={{ width: 40, height: 40 }} />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-gold mb-1">Email</h3>
-                      <a href="mailto:support@artavenueproductions.com" className="text-gray-300 hover:text-gold transition-colors">support@artavenueproductions.com</a>
+                  <div className="space-y-4">
+                    <div className="flex flex-col items-center">
+                      <motion.a
+                        href="mailto:support@artavenueproductions.com" // Updated Email link
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <SocialIcon network="gmail" color="#d4af37" />
+                      </motion.a>
+                      <h3 className="font-bold text-gold mb-1 text-center">Email</h3>
+                      <a href="mailto:support@artavenueproductions.com" className="text-gray-300 hover:text-gold transition-colors break-all text-center block">support@artavenueproductions.com</a>
                     </div>
                   </div>
 
                   {/* Social Icons */}
-                  <div className="flex items-center gap-4 pt-4">
-                    <motion.a
-                      href="https://discord.com/invite/artavenue" // Replace with actual Discord link
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <SocialIcon network="discord" color="#d4af37" styles={{ width: 40, height: 40 }} />
-                    </motion.a>
-                    <motion.a
-                      href="https://instagram.com/artavenue_official_" // Updated Instagram link
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <SocialIcon network="instagram" color="#d4af37" styles={{ width: 40, height: 40 }} />
-                    </motion.a>
-                    <motion.a
-                      href="mailto:support@artavenueproductions.com" // Updated Email link
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <SocialIcon network="gmail" color="#d4af37" styles={{ width: 40, height: 40 }} />
-                    </motion.a>
+                  <div className="pt-6">
+                    <h3 className="font-bold text-gold mb-4">Follow Us</h3>
+                    <div className="flex gap-4">
+                      <motion.a
+                        href="https://instagram.com/artavenue_official_" // Updated Instagram link
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <SocialIcon network="instagram" color="#d4af37" />
+                      </motion.a>
+                      <motion.a
+                        href="mailto:support@artavenueproductions.com" // Updated Email link
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <SocialIcon network="gmail" color="#d4af37" />
+                      </motion.a>
+                    </div>
                   </div>
                 </div>
               </div>

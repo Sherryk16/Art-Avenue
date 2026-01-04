@@ -9,19 +9,19 @@ import { Menu, X } from 'lucide-react';
 
 const navItems = [
   { name: 'Home', href: '/' },
-  { 
-    name: 'Services', 
+  {
+    name: 'Services',
     href: '/services',
     dropdown: [
-      { name: 'Logos', href: '/services#logos' },
-      { name: 'Banners', href: '/services#banners' },
-      { name: 'Static Overlays', href: '/services#static-overlays' },
-      { name: 'Animated Overlays', href: '/services#animated-overlays' },
-      { name: 'Emotes', href: '/services#emotes' },
-      { name: 'Animations', href: '/services#animations' },
-      { name: '2D Characters', href: '/services#2d-characters' },
-      { name: 'Intro', href: '/services#intro' },
-      { name: 'Outro', href: '/services#outro' },
+      { name: 'Logo Design', href: '/services/logo-design' },
+      { name: 'Stream Banners', href: '/services/stream-banners' },
+      { name: 'Twitch/YouTube Overlays', href: '/services/twitch-youtube-overlays' },
+      { name: 'Animated Alerts', href: '/services/animated-alerts' },
+      { name: 'Emotes', href: '/services/emotes' },
+      { name: 'Animations', href: '/services/animations' },
+      { name: '2D Models', href: '/services/2d-models' },
+      { name: '3D VTuber Models', href: '/services/3d-vtuber-models' },
+      { name: 'Full Branding Packages', href: '/services/full-branding-packages' },
     ]
   },
   { name: 'Portfolio', href: '/portfolio' },

@@ -1,11 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    unoptimized: true, // This disables Next.js image optimization to avoid Vercel limits
     domains: [
-      'example.com', // For placeholder images or development
-      'ojhderkeyxvzvlhqclmd.supabase.co', // Specific Supabase image storage domain
-      'supabase.co', // General Supabase domain, for other potential Supabase services
-      // Add any other image domains here as needed
+      'ojhderkeyxvzvlhqclmd.supabase.co', // Your Supabase image storage domain
+      'supabase.co', // General Supabase domain
+      'i.imgur.com', // Common image hosting
+      'images.unsplash.com', // Common image hosting
+      'cdn.discordapp.com', // Discord images
+      'avatars.githubusercontent.com', // GitHub avatars
     ],
   },
 };

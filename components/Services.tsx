@@ -59,18 +59,19 @@ export default function Services() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <motion.div
-              key={index}
-              className="premium-card p-8 group cursor-pointer"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-            >
-              <h3 className="text-2xl font-bold mb-3 text-gold">{service.title}</h3>
-              <p className="text-gray-300 leading-relaxed mb-6">{service.description}</p>
-              <div className="h-1 w-20 bg-gradient-to-r from-[#d4af37] to-[#f4e4bc] rounded-full group-hover:w-full transition-all duration-300" />
-            </motion.div>
+            <Link href={`/services/${service.title.toLowerCase().replace(/\//g, '-').replace(/\s+/g, '-')}`} key={index}>
+              <motion.div
+                className="premium-card p-8 group cursor-pointer"
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+              >
+                <h3 className="text-2xl font-bold mb-3 text-gold">{service.title}</h3>
+                <p className="text-gray-300 leading-relaxed mb-6">{service.description}</p>
+                <div className="h-1 w-20 bg-gradient-to-r from-[#d4af37] to-[#f4e4bc] rounded-full group-hover:w-full transition-all duration-300" />
+              </motion.div>
+            </Link>
           ))}
         </div>
 
