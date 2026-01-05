@@ -155,7 +155,7 @@ export default function ThreeDVTuberModelsService() {
               Ready for Next-Level VTubing?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Let's create a 3D model that brings your avatar to life with stunning detail.
+              Let&apos;s create a 3D model that brings your avatar to life with stunning detail.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">

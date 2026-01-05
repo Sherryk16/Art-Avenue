@@ -41,7 +41,7 @@ export default function StreamBannersService() {
                 creates a strong first impression and communicates your brand identity effectively.
               </p>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                Whether you're creating a Twitch channel banner, YouTube banner, or social media header, 
+                Whether you&apos;re creating a Twitch channel banner, YouTube banner, or social media header,
                 our designs are crafted to be visually appealing while maintaining readability across all devices.
               </p>
               
@@ -154,7 +154,7 @@ export default function StreamBannersService() {
               Ready to Transform Your Channel?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Let's create banners that make your channel stand out and attract more viewers.
+              Let&apos;s create banners that make your channel stand out and attract more viewers.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">

@@ -37,12 +37,12 @@ export default function EmotesService() {
                 Express Yourself with Custom Emotes
               </h2>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                Emotes are an essential part of any streamer's toolkit. They allow your viewers to express themselves 
+                Emotes are an essential part of any streamer&apos;s toolkit. They allow your viewers to express themselves
                 in chat using your custom-designed emotes, creating a stronger sense of community and brand identity.
               </p>
               <p className="text-gray-300 mb-6 leading-relaxed">
                 Our custom emotes are designed to be expressive, recognizable, and perfectly aligned with your brand. 
-                Whether for Twitch, Discord, or other platforms, they'll help you stand out and build a stronger community.
+                Whether for Twitch, Discord, or other platforms, they&apos;ll help you stand out and build a stronger community.
               </p>
               
               <div className="mt-8">
@@ -154,7 +154,7 @@ export default function EmotesService() {
               Ready to Create Your Emotes?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Let's create emotes that help your community express themselves.
+              Let&apos;s create emotes that help your community express themselves.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">

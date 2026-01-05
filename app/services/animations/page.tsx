@@ -154,7 +154,7 @@ export default function AnimationsService() {
               Ready to Animate Your Content?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Let's create animations that make your content stand out.
+              Let&apos;s create animations that make your content stand out.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">

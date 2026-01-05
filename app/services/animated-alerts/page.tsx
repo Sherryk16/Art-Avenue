@@ -155,7 +155,7 @@ export default function AnimatedAlertsService() {
               Ready to Engage Your Viewers?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Let's create animated alerts that make your stream more interactive and engaging.
+              Let&apos;s create animated alerts that make your stream more interactive and engaging.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">

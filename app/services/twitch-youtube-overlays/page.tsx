@@ -22,7 +22,7 @@ export default function TwitchYouTubeOverlaysService() {
               <span className="text-gold">Twitch/YouTube Overlays</span>
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Professional overlays that enhance your stream's visual appeal and create a cohesive brand experience.
+              Professional overlays that enhance your stream&apos;s visual appeal and create a cohesive brand experience.
             </p>
           </motion.div>
 
@@ -41,12 +41,12 @@ export default function TwitchYouTubeOverlaysService() {
                 creates a clean, polished look that keeps viewers engaged and enhances the overall viewing experience.
               </p>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                Whether you're streaming on Twitch, YouTube, or other platforms, our overlays are designed to 
+                Whether you&apos;re streaming on Twitch, YouTube, or other platforms, our overlays are designed to 
                 complement your content while maintaining visibility of important elements like chat and alerts.
               </p>
               
               <div className="mt-8">
-                <h3 className="text-2xl font-bold mb-4 text-gold">What You'll Get</h3>
+                <h3 className="text-2xl font-bold mb-4 text-gold">What You&apos;ll Get</h3>
                 <ul className="space-y-3">
                   {[
                     'Custom design tailored to your brand',
@@ -154,7 +154,7 @@ export default function TwitchYouTubeOverlaysService() {
               Ready to Enhance Your Stream?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Let's create overlays that make your stream look professional and engaging.
+              Let&apos;s create overlays that make your stream look professional and engaging.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">

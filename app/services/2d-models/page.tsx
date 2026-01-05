@@ -155,7 +155,7 @@ export default function TwoDModelsService() {
               Ready to Create Your Avatar?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Let's create a 2D model that perfectly represents your streaming persona.
+              Let&apos;s create a 2D model that perfectly represents your streaming persona.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">

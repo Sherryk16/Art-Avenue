@@ -41,7 +41,7 @@ export default function LogoDesignService() {
                 A well-designed logo creates a strong, memorable online identity that resonates with your audience.
               </p>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                Whether you're a Twitch streamer, YouTuber, or content creator, your logo should reflect your personality 
+                Whether you&apos;re a Twitch streamer, YouTuber, or content creator, your logo should reflect your personality
                 and style while maintaining a professional appearance that attracts new followers.
               </p>
               
@@ -50,7 +50,7 @@ export default function LogoDesignService() {
                 <ul className="space-y-3">
                   {[
                     'Multiple design concepts',
-                    'Unlimited revisions until you\'re satisfied',
+                    'Unlimited revisions until you are satisfied',
                     'Vector files for scalability',
                     'Social media variations',
                     'Brand guidelines document'
@@ -154,7 +154,7 @@ export default function LogoDesignService() {
               Ready to Create Your Logo?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Let's create a logo that perfectly represents your brand and style.
+              Let&apos;s create a logo that perfectly represents your brand and style.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
