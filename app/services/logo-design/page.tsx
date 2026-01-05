@@ -37,7 +37,7 @@ export default function LogoDesignService() {
                 Why Your Logo Matters
               </h2>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                Your logo is the face of your brand. It's the first thing viewers notice and the last thing they remember. 
+                Your logo is the face of your brand. It&apos;s the first thing viewers notice and the last thing they remember. 
                 A well-designed logo creates a strong, memorable online identity that resonates with your audience.
               </p>
               <p className="text-gray-300 mb-6 leading-relaxed">
