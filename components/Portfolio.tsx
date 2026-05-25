@@ -74,9 +74,12 @@ export default function Portfolio() {
     'Logo',
     'Banner',
     'Overlays',
+    'Animated Overlays',
     'Emotes',
     'Hand Drawn',
     'Animated Emotes',
+    'Intros',
+    'Outros',
   ];
 
   const sortedCategories = Object.keys(groupedItems).sort((a, b) => {
@@ -97,6 +100,12 @@ export default function Portfolio() {
         return 'Eye-Catching Banners That Make Your Profile Stand Out.<br />Designed for YouTube, Twitch, Discord, and all gaming platforms.';
       case 'overlays':
         return 'Stream-Ready Overlays for a Professional, Clean Look.<br />Enhance your stream with premium, well-designed graphics.';
+      case 'animated overlays':
+        return 'Animated Overlays That Bring Your Stream to Life.<br />Dynamic, eye-catching motion graphics for a professional broadcast.';
+      case 'intros':
+        return 'Professional Stream Intros That Make a Strong First Impression.<br />Custom animated intros tailored to your brand and style.';
+      case 'outros':
+        return 'Engaging Outros to End Your Streams on a High Note.<br />Perfect closing sequences with calls-to-action and branding.';
       case 'emotes':
         return 'Custom Emotes That Express Your Personality.<br />Cute, fun, expressive emotes made for Twitch & Discord.';
       case 'hand drawn':

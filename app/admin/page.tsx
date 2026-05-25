@@ -85,6 +85,7 @@ export default function AdminPage() {
     'Logo',
     'Emotes',
     'Animated Emotes',
+    'Animated Overlays',
     'Banner',
     'Overlays',
     'Hand-drawns',
