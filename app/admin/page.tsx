@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '../../utils/supabaseClient';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
@@ -20,6 +21,9 @@ interface PortfolioItem {
 }
 
 export default function AdminPage() {
+  const router = useRouter();
+  const [authChecking, setAuthChecking] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
   const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,6 +32,30 @@ export default function AdminPage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('/api/admin/check');
+        if (!res.ok) {
+          router.replace('/admin/login');
+          return;
+        }
+        setAuthenticated(true);
+      } catch {
+        router.replace('/admin/login');
+        return;
+      } finally {
+        setAuthChecking(false);
+      }
+    };
+    checkAuth();
+  }, [router]);
+
+  async function handleLogout() {
+    await fetch('/api/admin/logout', { method: 'POST' });
+    router.push('/admin/login');
+  }
 
   const fetchPortfolioItems = useCallback(async () => {
     setLoading(true);
@@ -264,20 +292,47 @@ export default function AdminPage() {
     }
   }
 
+  if (authChecking) {
+    return (
+      <>
+        <Navbar />
+        <main className="pt-32 pb-20 px-6 bg-linear-to-b from-black to-[#0a0a0a] min-h-screen flex items-center justify-center">
+          <p className="text-gold text-xl">Checking authentication...</p>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  if (!authenticated) {
+    return null;
+  }
+
   return (
     <>
       <Navbar />
       <main className="pt-32 pb-20 px-6 bg-linear-to-b from-black to-[#0a0a0a] min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <motion.h1
-            className="text-5xl md:text-6xl font-bold mb-12 text-center text-gold"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            style={{ fontFamily: 'var(--font-playfair)' }}
-          >
-            Admin Panel
-          </motion.h1>
+          <div className="flex items-center justify-between mb-12">
+            <motion.h1
+              className="text-5xl md:text-6xl font-bold text-gold"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              style={{ fontFamily: 'var(--font-playfair)' }}
+            >
+              Admin Panel
+            </motion.h1>
+            <motion.button
+              onClick={handleLogout}
+              className="premium-btn-outline text-sm px-4 py-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              Logout
+            </motion.button>
+          </div>
 
           <div className="premium-card p-8 mb-8">
             <h2 className="text-3xl font-bold mb-6 text-gold" style={{ fontFamily: 'var(--font-playfair)' }}>
