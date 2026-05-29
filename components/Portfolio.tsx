@@ -35,15 +35,12 @@ export default function Portfolio() {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error fetching featured portfolio items:', error);
-        console.error('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
         setError(error.message);
         setLoading(false);
         return;
       }
 
       const items = (data || []) as PortfolioItem[];
-      console.log('Fetched portfolio items:', items);
 
       setPortfolioItems(items);
       setLoading(false);
@@ -199,10 +196,7 @@ export default function Portfolio() {
                           fill
                           style={{ objectFit: 'contain' }}
                           quality={75}
-                          onError={(e) => {
-                            console.error('Image failed to load:', item.image_url);
-                            console.log('Item details:', item);
-                          }}
+                          onError={() => {}}
                         />
                       )}
                     </div>

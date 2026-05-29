@@ -35,15 +35,12 @@ export default function PortfolioPage() {
         .order('order', { ascending: true });
 
       if (error) {
-        console.error('Error fetching all portfolio items:', error);
-        console.error('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
         setError(error.message);
         setLoading(false);
         return;
       }
 
       const items = (data || []) as PortfolioItem[];
-      console.log('Fetched all portfolio items:', items);
 
       setPortfolioItems(items);
       setLoading(false);
@@ -221,10 +218,7 @@ export default function PortfolioPage() {
                               fill
                               style={{ objectFit: 'contain' }}
                               quality={100}
-                              onError={(e) => {
-                                console.error('Portfolio image failed to load:', item.image_url);
-                                console.log('Item details:', item);
-                              }}
+                              onError={() => {}}
                             />
                           )}
                           <motion.div

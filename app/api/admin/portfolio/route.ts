@@ -1,17 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { createClient } from '@/utils/supabase/server';
+import { requireAdmin } from '@/utils/adminAuth';
 import { getAdminClient } from '@/utils/supabaseAdmin';
-
-async function authenticate(): Promise<boolean> {
-  try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    return !!user;
-  } catch {
-    return false;
-  }
-}
+import { logAdminAction } from '@/utils/auditLog';
 
 const portfolioSchema = z.object({
   category: z.string().min(1, 'Category is required'),
@@ -32,9 +23,8 @@ const deleteSchema = z.object({
 });
 
 export async function GET() {
-  if (!(await authenticate())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if (!auth.authorized) return auth.response;
 
   const { data, error } = await getAdminClient()
     .from('portfolio_items')
@@ -49,9 +39,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  if (!(await authenticate())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if (!auth.authorized) return auth.response;
 
   let body: unknown;
   try {
@@ -75,13 +64,18 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
+  await logAdminAction({
+    action: 'CREATE',
+    details: `Created portfolio item: ${parsed.data.title} (${parsed.data.category})`,
+    admin_email: auth.user.email!,
+  });
+
   return NextResponse.json(data, { status: 201 });
 }
 
 export async function PUT(request: NextRequest) {
-  if (!(await authenticate())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if (!auth.authorized) return auth.response;
 
   let body: unknown;
   try {
@@ -108,13 +102,18 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
+  await logAdminAction({
+    action: 'UPDATE',
+    details: `Updated portfolio item ${id}: ${updateData.title}`,
+    admin_email: auth.user.email!,
+  });
+
   return NextResponse.json(data);
 }
 
 export async function DELETE(request: NextRequest) {
-  if (!(await authenticate())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const auth = await requireAdmin();
+  if (!auth.authorized) return auth.response;
 
   let body: unknown;
   try {
@@ -128,6 +127,16 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 });
   }
 
+  let deletedTitle: string | null = null;
+  try {
+    const { data } = await getAdminClient()
+      .from('portfolio_items')
+      .select('title')
+      .eq('id', parsed.data.id)
+      .single();
+    deletedTitle = (data as { title?: string } | null)?.title ?? null;
+  } catch {}
+
   const { error } = await getAdminClient()
     .from('portfolio_items')
     .delete()
@@ -136,6 +145,12 @@ export async function DELETE(request: NextRequest) {
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
+
+  await logAdminAction({
+    action: 'DELETE',
+    details: `Deleted portfolio item ${parsed.data.id}${deletedTitle ? ` (${deletedTitle})` : ''}`,
+    admin_email: auth.user.email!,
+  });
 
   return NextResponse.json({ success: true });
 }
