@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '../../utils/supabaseClient';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { motion } from 'framer-motion';
@@ -32,6 +31,7 @@ export default function AdminPage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -59,27 +59,28 @@ export default function AdminPage() {
 
   const fetchPortfolioItems = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('portfolio_items')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error('Error fetching portfolio items:', error);
-      setError(error.message);
+    setError(null);
+    try {
+      const res = await fetch('/api/admin/portfolio');
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to fetch');
+      }
+      const data = await res.json();
+      setPortfolioItems(data || []);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to fetch portfolio items';
+      setError(message);
+    } finally {
       setLoading(false);
-      return;
     }
-    setPortfolioItems(data || []);
-    setLoading(false);
   }, []);
 
   useEffect(() => {
-    const loadItems = async () => {
-      await fetchPortfolioItems();
-    };
-    loadItems();
-  }, [fetchPortfolioItems]);
+    if (authenticated) {
+      fetchPortfolioItems();
+    }
+  }, [authenticated, fetchPortfolioItems]);
 
   const fixedCategories = [
     'Logo',
@@ -106,111 +107,80 @@ export default function AdminPage() {
   };
   const [formState, setFormState] = useState<Omit<PortfolioItem, 'id' | 'created_at'>>(initialFormState);
 
+  async function uploadFile(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const res = await fetch('/api/admin/portfolio/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.error || 'Upload failed');
+    }
+
+    const data = await res.json();
+    return data.url;
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    setSubmitting(true);
 
-    let imageUrlToSave = formState.image_url;
-    let videoUrlToSave = formState.video_url;
+    try {
+      let imageUrlToSave = formState.image_url;
+      let videoUrlToSave = formState.video_url;
 
-    if (imageFile) {
-      const fileExtension = imageFile.name.split('.').pop();
-      const fileName = `${Date.now()}.${fileExtension}`;
-      const filePath = `public/${fileName}`;
+      if (imageFile) {
+        imageUrlToSave = await uploadFile(imageFile);
+      }
 
-      const { error: uploadError } = await supabase.storage
-        .from('portfolio-images')
-        .upload(filePath, imageFile, {
-          cacheControl: '3600',
-          upsert: false,
+      if (videoFile) {
+        videoUrlToSave = await uploadFile(videoFile);
+      }
+
+      const itemToSave = { ...formState, image_url: imageUrlToSave, video_url: videoUrlToSave };
+
+      if (editingItem) {
+        const res = await fetch('/api/admin/portfolio', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...itemToSave, id: editingItem.id }),
         });
 
-      if (uploadError) {
-        console.error('Error uploading image:', uploadError);
-        setError(uploadError.message);
-        return;
-      }
-      
-      const { data: publicUrlData } = supabase.storage
-        .from('portfolio-images')
-        .getPublicUrl(filePath);
-
-      if (publicUrlData) {
-        imageUrlToSave = publicUrlData.publicUrl;
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.error || 'Update failed');
+        }
       } else {
-        setError('Could not get public URL for the uploaded image.');
-        return;
-      }
-    }
-
-    if (videoFile) {
-      const fileExtension = videoFile.name.split('.').pop();
-      const fileName = `${Date.now()}.${fileExtension}`;
-      const filePath = `public/${fileName}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('portfolio-images')
-        .upload(filePath, videoFile, {
-          cacheControl: '3600',
-          upsert: false,
+        const res = await fetch('/api/admin/portfolio', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(itemToSave),
         });
 
-      if (uploadError) {
-        console.error('Error uploading video:', uploadError);
-        setError(uploadError.message);
-        return;
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.error || 'Create failed');
+        }
       }
-      
-      const { data: publicUrlData } = supabase.storage
-        .from('portfolio-images')
-        .getPublicUrl(filePath);
 
-      if (publicUrlData) {
-        videoUrlToSave = publicUrlData.publicUrl;
-      } else {
-        setError('Could not get public URL for the uploaded video.');
-        return;
-      }
-    }
-
-    const itemToSave = { ...formState, image_url: imageUrlToSave, video_url: videoUrlToSave };
-
-    if (editingItem) {
-      const { error } = await supabase
-        .from('portfolio_items')
-        .update(itemToSave)
-        .eq('id', editingItem.id)
-        .select();
-
-      if (error) {
-        console.error('Error updating portfolio item:', error);
-        setError(error.message);
-        return;
-      }
       setEditingItem(null);
       setFormState(initialFormState);
       setImageFile(null);
       setImagePreview(null);
       setVideoFile(null);
       setVideoPreview(null);
-    } else {
-      const { error } = await supabase
-        .from('portfolio_items')
-        .insert(itemToSave)
-        .select();
-
-      if (error) {
-        console.error('Error adding portfolio item:', error);
-        setError(error.message);
-        return;
-      }
-      setFormState(initialFormState);
-      setImageFile(null);
-      setImagePreview(null);
-      setVideoFile(null);
-      setVideoPreview(null);
+      fetchPortfolioItems();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'An error occurred';
+      setError(message);
+    } finally {
+      setSubmitting(false);
     }
-    fetchPortfolioItems();
   }
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -258,17 +228,24 @@ export default function AdminPage() {
   async function handleDeleteClick(id: string) {
     if (!confirm('Are you sure you want to delete this item?')) return;
 
-    const { error } = await supabase
-      .from('portfolio_items')
-      .delete()
-      .eq('id', id);
+    setError(null);
+    try {
+      const res = await fetch('/api/admin/portfolio', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
 
-    if (error) {
-      console.error('Error deleting portfolio item:', error);
-      setError(error.message);
-      return;
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Delete failed');
+      }
+
+      fetchPortfolioItems();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'An error occurred';
+      setError(message);
     }
-    fetchPortfolioItems();
   }
 
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -461,8 +438,8 @@ export default function AdminPage() {
                 <label htmlFor="is_featured" className="ml-2 block text-sm text-gray-300">Featured Item</label>
               </div>
               <div className="flex gap-4">
-                <button type="submit" className="premium-btn">
-                  {editingItem ? 'Update Item' : 'Add Item'}
+                <button type="submit" disabled={submitting} className="premium-btn">
+                  {submitting ? 'Saving...' : editingItem ? 'Update Item' : 'Add Item'}
                 </button>
                 {editingItem && (
                   <button type="button" onClick={handleCancelEdit} className="premium-btn-outline">

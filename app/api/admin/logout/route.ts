@@ -1,14 +1,12 @@
 import { NextResponse } from 'next/server';
+import { createClient } from '@/utils/supabase/server';
 
 export async function POST() {
-  const response = NextResponse.json({ success: true });
-  response.cookies.set('admin_token', '', {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-    maxAge: 0,
-  });
-
-  return response;
+  try {
+    const supabase = await createClient();
+    await supabase.auth.signOut();
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: 'Failed to sign out' }, { status: 500 });
+  }
 }

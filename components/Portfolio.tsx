@@ -5,7 +5,7 @@ import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { supabase } from '../utils/supabaseClient';
+import { getClient } from '../utils/supabaseClient';
 import Image from 'next/image';
 
 interface PortfolioItem {
@@ -27,9 +27,10 @@ export default function Portfolio() {
   useEffect(() => {
     async function getFeaturedPortfolioItems() {
       setLoading(true);
-      const { data, error, count } = await supabase
+      const supabase = getClient();
+      const { data, error } = await supabase
         .from('portfolio_items')
-        .select('id, category, title, description, image_url, video_url, is_featured', { count: 'exact' })
+        .select('id, category, title, description, image_url, video_url, is_featured')
         .eq('is_featured', true)
         .order('created_at', { ascending: false });
 
@@ -41,21 +42,10 @@ export default function Portfolio() {
         return;
       }
 
-      console.log('Fetched portfolio items:', data);
-      console.log('Total featured items:', count);
+      const items = (data || []) as PortfolioItem[];
+      console.log('Fetched portfolio items:', items);
 
-      // Group items by category to check what's available
-      const grouped = data?.reduce((acc, item) => {
-        if (!acc[item.category]) {
-          acc[item.category] = [];
-        }
-        acc[item.category].push(item);
-        return acc;
-      }, {} as { [key: string]: PortfolioItem[] });
-
-      console.log('Grouped items by category:', grouped);
-
-      setPortfolioItems(data || []);
+      setPortfolioItems(items);
       setLoading(false);
     }
 

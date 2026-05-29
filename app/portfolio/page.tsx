@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { useEffect } from 'react';
-import { supabase } from '../../utils/supabaseClient';
+import { getClient } from '../../utils/supabaseClient';
 import Image from 'next/image';
 
 interface PortfolioItem {
@@ -27,9 +27,10 @@ export default function PortfolioPage() {
   useEffect(() => {
     async function getAllPortfolioItems() {
       setLoading(true);
-      const { data, error, count } = await supabase
+      const supabase = getClient();
+      const { data, error } = await supabase
         .from('portfolio_items')
-        .select('id, category, title, description, image_url, video_url, order', { count: 'exact' })
+        .select('id, category, title, description, image_url, video_url, order')
         .order('category', { ascending: true })
         .order('order', { ascending: true });
 
@@ -41,10 +42,10 @@ export default function PortfolioPage() {
         return;
       }
 
-      console.log('Fetched all portfolio items:', data);
-      console.log('Total portfolio items:', count);
+      const items = (data || []) as PortfolioItem[];
+      console.log('Fetched all portfolio items:', items);
 
-      setPortfolioItems(data || []);
+      setPortfolioItems(items);
       setLoading(false);
     }
 

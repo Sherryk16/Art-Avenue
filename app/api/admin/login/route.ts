@@ -1,36 +1,34 @@
-import { NextResponse } from 'next/server';
-import crypto from 'crypto';
+import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@/utils/supabase/server';
+import { checkRateLimit, clearRateLimit } from '@/utils/rateLimit';
 
-function createSessionToken(): string {
-  const secret = process.env.ADMIN_SECRET || 'default-secret';
-  const timestamp = Date.now().toString();
-  const hmac = crypto.createHmac('sha256', secret).update(timestamp).digest('hex');
-  return `${timestamp}.${hmac}`;
-}
-
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const { username, password } = await request.json();
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+    const rateCheck = checkRateLimit(`login:${ip}`, 5, 60000);
 
-    const validUsername = (process.env.ADMIN_USERNAME || '').replace(/^"|"$/g, '').trim();
-    const validPassword = (process.env.ADMIN_PASSWORD || '').replace(/^"|"$/g, '').trim();
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        { error: 'Too many login attempts. Please try again in 60 seconds.' },
+        { status: 429 }
+      );
+    }
 
-    if (!username || !password || username !== validUsername || password !== validPassword) {
+    const { email, password } = await request.json();
+
+    if (!email || !password) {
+      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
+    }
+
+    const supabase = await createClient();
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 
-    const token = createSessionToken();
-
-    const response = NextResponse.json({ success: true });
-    response.cookies.set('admin_token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24,
-    });
-
-    return response;
+    clearRateLimit(`login:${ip}`);
+    return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
