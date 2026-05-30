@@ -1,11 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getClient } from '../utils/supabaseClient';
 import Image from 'next/image';
 
 interface PortfolioItem {
@@ -27,23 +25,18 @@ export default function Portfolio() {
   useEffect(() => {
     async function getFeaturedPortfolioItems() {
       setLoading(true);
-      const supabase = getClient();
-      const { data, error } = await supabase
-        .from('portfolio_items')
-        .select('id, category, title, description, image_url, video_url, is_featured')
-        .eq('is_featured', true)
-        .order('created_at', { ascending: false });
+      try {
+        const res = await fetch('/api/portfolio');
+        if (!res.ok) throw new Error('Failed to fetch');
+        const allItems: PortfolioItem[] = await res.json();
+        const items = allItems.filter(item => item.is_featured);
 
-      if (error) {
-        setError(error.message);
+        setPortfolioItems(items);
         setLoading(false);
-        return;
+      } catch {
+        setError('Failed to load portfolio');
+        setLoading(false);
       }
-
-      const items = (data || []) as PortfolioItem[];
-
-      setPortfolioItems(items);
-      setLoading(false);
     }
 
     getFeaturedPortfolioItems();

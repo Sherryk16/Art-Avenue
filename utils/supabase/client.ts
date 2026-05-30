@@ -1,8 +1,6 @@
-import { createBrowserClient } from '@supabase/ssr'
-
-export function createClient() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+export function createClient(): never {
+  throw new Error(
+    'Direct Supabase client access from the browser is not allowed. ' +
+    'Use fetch(\'/api/portfolio\') instead.'
   )
 }

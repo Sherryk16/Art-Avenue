@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { useEffect } from 'react';
-import { getClient } from '../../utils/supabaseClient';
 import Image from 'next/image';
 
 interface PortfolioItem {
@@ -27,23 +26,18 @@ export default function PortfolioPage() {
   useEffect(() => {
     async function getAllPortfolioItems() {
       setLoading(true);
-      const supabase = getClient();
-      const { data, error } = await supabase
-        .from('portfolio_items')
-        .select('id, category, title, description, image_url, video_url, order')
-        .order('category', { ascending: true })
-        .order('order', { ascending: true });
+      try {
+        const res = await fetch('/api/portfolio');
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        const items = (data || []) as PortfolioItem[];
 
-      if (error) {
-        setError(error.message);
+        setPortfolioItems(items);
         setLoading(false);
-        return;
+      } catch {
+        setError('Failed to load portfolio');
+        setLoading(false);
       }
-
-      const items = (data || []) as PortfolioItem[];
-
-      setPortfolioItems(items);
-      setLoading(false);
     }
 
     getAllPortfolioItems();
